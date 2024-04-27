@@ -13,5 +13,9 @@ include "./sections/navbar.php";
     <td> <?php include "./sections/random.php"; ?></td>
 </tr>
 </table>
+    <table border="0" width="100%">
+      <hr>
+      Copyright MSNHOMEPAGE 2017 - <?php date("Y"); ?>
+    </table>
 </body>
 </html>
