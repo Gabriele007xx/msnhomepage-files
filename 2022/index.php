@@ -1,6 +1,6 @@
 <html>
   <head>
-    
+    <title>Home - msn</title>
   </head>
   <body>
 <?php 
