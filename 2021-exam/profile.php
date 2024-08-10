@@ -1,12 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><title>Home - E-commerce</title>
 <?php 
 session_start();
 include_once('mysql-fix.php');
 ?>
-
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><title>Home - E-commerce</title>
-
 </head>
 <body>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
@@ -53,25 +51,52 @@ echo "<a href=product.php>I tuoi acquisti</a>";
 <tbody>
 <tr>
 <td>
-<h1>Ultimi prodotti</h1><br>
 <?php
-$conn=mysql_connect("localhost","root","");
+if(isset($_SESSION['role']))
+{
+	if($_SESSION['role']=="Venditore")
+	{
+	$nome = $_SESSION['username'];
+	$conn=mysql_connect("localhost","root","");
 	if (!$conn){
 		echo ("Errore durante la connessone a MySQL");
 		exit();
 			   }
 	mysql_select_db("e-commerce");
-	$risultato = mysql_query("SELECT * FROM prodotto ORDER BY id DESC");
+	$query = "SELECT * FROM venditore WHERE VenditoreUsername = '$nome'";
+	$risultato = mysql_query($query);
 	$riga=mysql_fetch_array($risultato);
 	echo "<table border=1>";
-	echo "<tr><td>id</td><td>Venditore</td><td>Nome_prodotto</td><td>Prezzo</td><td>Scadenza</td><td>Immagine</td></tr>";
-	while($riga)
-	{
-		echo "<tr><td>" . $riga["id"] . "</td><td>" . $riga["Venditore"] . "</td><td>" . $riga["Nome_prodotto"] . "</td><td>" . $riga["Prezzo"] . "</td><td>" . $riga["Scadenza"] . "</td><td>" . $riga["Immagine"] . "</td></tr>";
-		$riga=mysql_fetch_array($risultato);
-	}
+	echo "<tr><td>" . $riga['VenditoreUsername'] . "</td></tr>";
+	echo "<tr><td>" . $riga['Nome'] . $riga['Cognome'] . "</td></tr>";
+	echo "<tr><td>" . $_SESSION['role']. "</td></tr>";
 	echo "</table>";
+	}
+	else if($_SESSION['role']=="Utente")
+	{
+		$nome = $_SESSION['username'];
+	$conn=mysql_connect("localhost","root","");
+	if (!$conn){
+		echo ("Errore durante la connessone a MySQL");
+		exit();
+			   }
+	mysql_select_db("e-commerce");
+	$risultato = mysql_query("SELECT * FROM utente WHERE username = '$nome'");
+	$riga=mysql_fetch_array($risultato);
+	echo "<table border=1>";
+	echo "<tr><td>" . $riga['username'] . "</td></tr>";
+	echo "<tr><td>" . $_SESSION['role'] . "</td></tr>";
+	echo "<tr><td>Numero Acquisti: " . $riga['NumeroAcquisti'] . "</td></tr>";
+	echo "</table>";		
+	}
+}
+else
+{
+	echo "Devi essere loggato per vedere il tuo profilo.";
+}
 ?>
+<br>
+<a href="logout.php">Logout</a>
 </td>
 </tr>
 <tr>

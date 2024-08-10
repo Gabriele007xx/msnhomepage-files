@@ -1,12 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><title>Home - E-commerce</title>
 <?php 
 session_start();
 include_once('mysql-fix.php');
 ?>
-
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><title>Home - E-commerce</title>
-
 </head>
 <body>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
@@ -53,15 +51,19 @@ echo "<a href=product.php>I tuoi acquisti</a>";
 <tbody>
 <tr>
 <td>
-<h1>Ultimi prodotti</h1><br>
 <?php
-$conn=mysql_connect("localhost","root","");
+if(isset($_SESSION['role']))
+{
+	if($_SESSION['role']=="Venditore")
+	{
+	$nome = $_SESSION['username'];
+	$conn=mysql_connect("localhost","root","");
 	if (!$conn){
 		echo ("Errore durante la connessone a MySQL");
 		exit();
 			   }
 	mysql_select_db("e-commerce");
-	$risultato = mysql_query("SELECT * FROM prodotto ORDER BY id DESC");
+	$risultato = mysql_query("SELECT * FROM prodotto WHERE Venditore = '$nome'");
 	$riga=mysql_fetch_array($risultato);
 	echo "<table border=1>";
 	echo "<tr><td>id</td><td>Venditore</td><td>Nome_prodotto</td><td>Prezzo</td><td>Scadenza</td><td>Immagine</td></tr>";
@@ -71,7 +73,34 @@ $conn=mysql_connect("localhost","root","");
 		$riga=mysql_fetch_array($risultato);
 	}
 	echo "</table>";
+	}
+	else if($_SESSION['role']=="Utente")
+	{
+		$conn=mysql_connect("localhost","root","");
+	if (!$conn){
+		echo ("Errore durante la connessone a MySQL");
+		exit();
+			   }
+	mysql_select_db("e-commerce");
+	$nome = $_SESSION['username'];
+	$risultato = mysql_query("SELECT * FROM compra INNER JOIN prodotto ON compra.idprodotto = prodotto.id AND username = '$nome'");
+	$riga=mysql_fetch_array($risultato);
+	echo "<table border=1>";
+	echo "<tr><td>idProdotto</td><td>Venditore</td><td>Nome_prodotto</td><td>Prezzo</td><td>Scadenza</td><td>Immagine</td></tr>";
+	while($riga)
+	{
+		echo "<tr><td>" . $riga["id"] . "</td><td>" . $riga["Venditore"] . "</td><td>" . $riga["Nome_prodotto"] . "</td><td>" . $riga["Prezzo"] . "</td><td>" . $riga["Scadenza"] . "</td><td>" . $riga["Immagine"] . "</td></tr>";
+		$riga=mysql_fetch_array($risultato);
+	}
+	echo "</table>";
+	}
+	}
+else
+{
+echo "Devi essere un venditore per vedere i tuoi prodotti.";
+}
 ?>
+<br>
 </td>
 </tr>
 <tr>

@@ -1,12 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<?php 
-session_start();
-include_once('mysql-fix.php');
-?>
-
 <html><head>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><title>Home - E-commerce</title>
-
+<?php 
+session_start();
+?>
 </head>
 <body>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
@@ -53,25 +50,21 @@ echo "<a href=product.php>I tuoi acquisti</a>";
 <tbody>
 <tr>
 <td>
-<h1>Ultimi prodotti</h1><br>
-<?php
-$conn=mysql_connect("localhost","root","");
-	if (!$conn){
-		echo ("Errore durante la connessone a MySQL");
-		exit();
-			   }
-	mysql_select_db("e-commerce");
-	$risultato = mysql_query("SELECT * FROM prodotto ORDER BY id DESC");
-	$riga=mysql_fetch_array($risultato);
-	echo "<table border=1>";
-	echo "<tr><td>id</td><td>Venditore</td><td>Nome_prodotto</td><td>Prezzo</td><td>Scadenza</td><td>Immagine</td></tr>";
-	while($riga)
-	{
-		echo "<tr><td>" . $riga["id"] . "</td><td>" . $riga["Venditore"] . "</td><td>" . $riga["Nome_prodotto"] . "</td><td>" . $riga["Prezzo"] . "</td><td>" . $riga["Scadenza"] . "</td><td>" . $riga["Immagine"] . "</td></tr>";
-		$riga=mysql_fetch_array($risultato);
-	}
-	echo "</table>";
-?>
+<form method="post" action="loginuser.php"><br>
+Login come venditore:
+<div class="input-group"><label>Username</label>
+<input name="username" value="" type="text"></div>
+<div class="input-group">
+<label>Password</label>
+<input name="password" type="password"></div>
+<div class="input-group">
+<button type="submit" class="btn" name="reg_user">Login</button>
+</div>
+<p>
+Non sei un utente? <a href="register.php">Registrati!</a>
+</p>
+</form>
+<br>
 </td>
 </tr>
 <tr>
