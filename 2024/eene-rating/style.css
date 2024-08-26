@@ -3,10 +3,26 @@ body {
     flex-direction: column;
 }
 
-.episode 
+.episode1 
 {
 	display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    align-content: center;
     background-color: gray;
+    justify-content: space-evenly;
+}
+
+.episode2 
+{
+	display: flex;
+    flex-direction: row;
+    align-content: center;
+    background-color: white;
+    justify-content: space-evenly;
+}
+.links
+{
+	display: flex;
+    flex-direction: row;
+    align-content: center;	
 }
